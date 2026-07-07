@@ -30,7 +30,7 @@ export default async function AnalyticsPage() {
   })
   const dailyData = last7Days.map(day => {
     const amount = expenses
-      ?.filter(e => isSameDay(new Date(e.date!), day))
+      ?.filter(e => e.date && isSameDay(new Date(e.date), day))
       ?.reduce((acc, e) => acc + Number(e.amount), 0) || 0
     return {
       name: format(day, "EEE"),
