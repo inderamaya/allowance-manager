@@ -15,7 +15,7 @@ export function MoneyFlowDiagram({ allowance, mama, wallet, savings }: MoneyFlow
     { label: "Allowance", value: allowance, icon: CreditCard, color: "bg-primary" },
     { label: "Mama Account", value: mama, icon: Home, color: "bg-amber-400" },
     { label: "Wallet", value: wallet, icon: Wallet, color: "bg-yellow-500" },
-    { label: "Savings", value: savings, icon: PiggyBank, color: "bg-gold" },
+    { label: "Savings", value: savings, icon: PiggyBank, color: "bg-primary" },
   ]
 
   return (

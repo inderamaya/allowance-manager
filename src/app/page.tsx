@@ -32,7 +32,9 @@ export default async function DashboardPage() {
     supabase.from("transfers").select("amount, type, status").eq("user_id", user.id)
   ])
 
-  const walletBalance = walletTransactions?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+  const walletBalance = walletTransactions
+    ?.filter(t => t.type !== 'savings')
+    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
 
   // Mama balance logic:
   // Initially settings.mama_allocation per month.
