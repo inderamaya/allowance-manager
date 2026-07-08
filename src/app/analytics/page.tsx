@@ -17,8 +17,8 @@ export default async function AnalyticsPage() {
     .order("date", { ascending: true })
 
   // Process Category Data
-  const categoriesMap: Record<string, number> = {}
-  expenses?.forEach(e => {
+  const categoriesMap: Record<string, number> = {};
+  (expenses as any[])?.forEach((e: any) => {
     categoriesMap[e.category] = (categoriesMap[e.category] || 0) + Number(e.amount)
   })
   const categoryData = Object.entries(categoriesMap).map(([name, value]) => ({ name, value }))
@@ -29,9 +29,9 @@ export default async function AnalyticsPage() {
     end: new Date()
   })
   const dailyData = last7Days.map(day => {
-    const amount = expenses
-      ?.filter(e => isSameDay(new Date(e.date!), day))
-      ?.reduce((acc, e) => acc + Number(e.amount), 0) || 0
+    const amount = (expenses as any[])
+      ?.filter((e: any) => isSameDay(new Date(e.date!), day))
+      ?.reduce((acc: any, e: any) => acc + Number(e.amount), 0) || 0
     return {
       name: format(day, "EEE"),
       amount

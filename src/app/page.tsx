@@ -32,23 +32,23 @@ export default async function DashboardPage() {
     supabase.from("transfers").select("amount, type, status").eq("user_id", user.id)
   ])
 
-  const walletBalance = walletTransactions
-    ?.filter(t => t.type !== 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+  const walletBalance = (walletTransactions as any[])
+    ?.filter((t: any) => t.type !== 'savings')
+    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
 
   // Mama balance logic:
   // Initially settings.mama_allocation per month.
   // We need to sum all monthly allocations to Mama and subtract transfers received.
   const { data: allowances } = await supabase.from("monthly_allowance").select("amount").eq("user_id", user.id)
-  const totalAllocatedToMama = (allowances?.length || 0) * (settings?.mama_allocation || 300)
-  const totalTransfersReceived = transfers
-    ?.filter(t => t.type === 'receive' && t.status === 'completed')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+  const totalAllocatedToMama = ((allowances as any[])?.length || 0) * (settings?.mama_allocation || 300)
+  const totalTransfersReceived = (transfers as any[])
+    ?.filter((t: any) => t.type === 'receive' && t.status === 'completed')
+    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
   const mamaBalance = totalAllocatedToMama - totalTransfersReceived
 
-  const savingsBalance = walletTransactions
-    ?.filter(t => t.type === 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+  const savingsBalance = (walletTransactions as any[])
+    ?.filter((t: any) => t.type === 'savings')
+    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
 
   const totalRemaining = walletBalance + mamaBalance + savingsBalance
 
@@ -60,9 +60,9 @@ export default async function DashboardPage() {
 
   // Spending insights
   const currentMonthStart = startOfMonth(now).toISOString().split('T')[0]
-  const currentMonthExpenses = expenses
-    ?.filter(e => e.date && e.date >= currentMonthStart)
-    ?.reduce((acc, e) => acc + Number(e.amount), 0) || 0
+  const currentMonthExpenses = (expenses as any[])
+    ?.filter((e: any) => e.date && e.date >= currentMonthStart)
+    ?.reduce((acc: any, e: any) => acc + Number(e.amount), 0) || 0
 
   const daysPassed = differenceInDays(now, startOfMonth(now)) + 1
   const averageDailySpend = currentMonthExpenses / daysPassed
