@@ -1,6 +1,16 @@
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/proxy'
 
+// Runtime shim for process.version
+if (typeof process === 'undefined' || !process.version) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(globalThis as any).process = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...(globalThis as any).process,
+    version: 'v18.0.0',
+  }
+}
+
 export async function proxy(request: NextRequest) {
   return await updateSession(request)
 }
