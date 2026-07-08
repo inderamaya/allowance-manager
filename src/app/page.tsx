@@ -6,7 +6,7 @@ import { MoneyFlowDiagram } from "@/components/dashboard/MoneyFlowDiagram"
 import { Wallet, PiggyBank, CreditCard, Home, Calendar, TrendingUp, Info } from "lucide-react"
 import { triggerMonthlyAllowance } from "@/app/actions/finance"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { differenceInDays, endOfMonth, startOfMonth } from "date-fns"
+import { calculateFinancials } from "@/lib/finance"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -24,49 +24,32 @@ export default async function DashboardPage() {
     { data: settings },
     { data: walletTransactions },
     { data: expenses },
-    { data: transfers }
+    { data: transfers },
+    { data: allowances }
   ] = await Promise.all([
     supabase.from("settings").select("*").eq("user_id", user.id).single(),
     supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
     supabase.from("expenses").select("amount, date").eq("user_id", user.id),
-    supabase.from("transfers").select("amount, type, status").eq("user_id", user.id)
+    supabase.from("transfers").select("amount, type, status").eq("user_id", user.id),
+    supabase.from("monthly_allowance").select("amount").eq("user_id", user.id)
   ])
 
-  const walletBalance = walletTransactions
-    ?.filter(t => t.type !== 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
-
-  // Mama balance logic:
-  // Initially settings.mama_allocation per month.
-  // We need to sum all monthly allocations to Mama and subtract transfers received.
-  const { data: allowances } = await supabase.from("monthly_allowance").select("amount").eq("user_id", user.id)
-  const totalAllocatedToMama = (allowances?.length || 0) * (settings?.mama_allocation || 300)
-  const totalTransfersReceived = transfers
-    ?.filter(t => t.type === 'receive' && t.status === 'completed')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
-  const mamaBalance = totalAllocatedToMama - totalTransfersReceived
-
-  const savingsBalance = walletTransactions
-    ?.filter(t => t.type === 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
-
-  const totalRemaining = walletBalance + mamaBalance + savingsBalance
-
-  // Date calculations
-  const now = new Date()
-  const lastDayOfMonth = endOfMonth(now)
-  const daysRemaining = differenceInDays(lastDayOfMonth, now) + 1
-  const dailyBudget = walletBalance / daysRemaining
-
-  // Spending insights
-  const currentMonthStart = startOfMonth(now).toISOString().split('T')[0]
-  const currentMonthExpenses = expenses
-    ?.filter(e => e.date && e.date >= currentMonthStart)
-    ?.reduce((acc, e) => acc + Number(e.amount), 0) || 0
-
-  const daysPassed = differenceInDays(now, startOfMonth(now)) + 1
-  const averageDailySpend = currentMonthExpenses / daysPassed
-  const projectedExhaustion = walletBalance / (averageDailySpend || 1)
+  const {
+    walletBalance,
+    mamaBalance,
+    savingsBalance,
+    totalRemaining,
+    daysRemaining,
+    dailyBudget,
+    averageDailySpend,
+    projectedExhaustion
+  } = calculateFinancials({
+    walletTransactions: walletTransactions || [],
+    expenses: expenses || [],
+    transfers: transfers || [],
+    settings: settings,
+    allowances: allowances || []
+  })
 
   return (
     <AppLayout>
