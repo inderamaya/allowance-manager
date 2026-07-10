@@ -7,7 +7,7 @@ import { MoneyFlowDiagram } from "@/components/dashboard/MoneyFlowDiagram"
 import { PiggyBank, CreditCard, Home, Calendar, TrendingUp, Info } from "lucide-react"
 import { triggerMonthlyAllowance } from "@/app/actions/finance"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { differenceInDays, endOfMonth, startOfMonth } from "date-fns"
+import { differenceInDays, endOfMonth, startOfMonth, format } from "date-fns"
 import { UndoRedoControls } from "@/components/dashboard/UndoRedoControls"
 import { BankAccountsCard } from "@/components/dashboard/BankAccountsCard"
 
@@ -27,27 +27,20 @@ export default async function DashboardPage() {
     { data: settings },
     { data: walletTransactions },
     { data: expenses },
-    { data: transfers }
+    { data: latestAction }
   ] = await Promise.all([
     supabase.from("settings").select("*").eq("user_id", user.id).single(),
     supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
     supabase.from("expenses").select("amount, date").eq("user_id", user.id),
-    supabase.from("transfers").select("amount, type, status").eq("user_id", user.id)
+    supabase.from("action_history").select("created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1)
   ])
 
   const walletBalance = (walletTransactions as any[])
     ?.filter((t: any) => t.type !== 'savings')
     ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
 
-  // Mama balance logic:
-  // Initially settings.mama_allocation per month.
-  // We need to sum all monthly allocations to Mama and subtract transfers received.
-  const { data: allowances } = await supabase.from("monthly_allowance").select("amount").eq("user_id", user.id)
-  const totalAllocatedToMama = ((allowances as any[])?.length || 0) * (settings?.mama_allocation || 300)
-  const totalTransfersReceived = (transfers as any[])
-    ?.filter((t: any) => t.type === 'receive' && t.status === 'completed')
-    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
-  const mamaBalance = totalAllocatedToMama - totalTransfersReceived
+  // Mama Account displays the current wallet balance (money held by mother)
+  const mamaBalance = walletBalance
 
   const savingsBalance = (walletTransactions as any[])
     ?.filter((t: any) => t.type === 'savings')
@@ -71,6 +64,16 @@ export default async function DashboardPage() {
   const daysPassed = differenceInDays(now, startOfMonth(now)) + 1
   const averageDailySpend = currentMonthExpenses / daysPassed
   const projectedExhaustion = walletBalance / (averageDailySpend || 1)
+
+  // Format current day and date
+  const currentDayDateStr = format(now, "EEEE, d MMMM yyyy")
+
+  // Last update timestamp calculation
+  const lastActionRow = latestAction && (latestAction as any[]).length > 0 ? latestAction[0] : null
+  const lastUpdatedDate = lastActionRow?.created_at ? new Date(lastActionRow.created_at) : null
+  const lastUpdatedStr = lastUpdatedDate
+    ? format(lastUpdatedDate, "EEEE, d MMMM yyyy, h:mm a")
+    : "No updates yet"
 
   return (
     <AppLayout>
@@ -134,6 +137,14 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
+                  <p className="text-xs text-muted-foreground uppercase font-medium tracking-wider mb-1">Current Date</p>
+                  <p className="text-lg font-bold">{currentDayDateStr}</p>
+                </div>
+                <div className="pt-4 border-t">
+                  <p className="text-xs text-muted-foreground uppercase font-medium tracking-wider mb-1">Last Updated</p>
+                  <p className="text-sm font-semibold text-foreground">{lastUpdatedStr}</p>
+                </div>
+                <div className="pt-4 border-t">
                   <p className="text-2xl font-bold">{daysRemaining}</p>
                   <p className="text-xs text-muted-foreground">Days remaining in month</p>
                 </div>

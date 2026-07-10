@@ -4,6 +4,8 @@ import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
 import { AnalyticsCharts } from "@/components/analytics/AnalyticsCharts"
 import { format, eachDayOfInterval, isSameDay, subDays } from "date-fns"
+import { BalanceCard } from "@/components/dashboard/BalanceCard"
+import { PiggyBank, CreditCard, Home } from "lucide-react"
 
 export default async function AnalyticsPage() {
   const supabase = await createClient()
@@ -11,11 +13,25 @@ export default async function AnalyticsPage() {
 
   if (!user) redirect("/login")
 
-  const { data: expenses } = await supabase
-    .from("expenses")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("date", { ascending: true })
+  const [
+    { data: walletTransactions },
+    { data: expenses }
+  ] = await Promise.all([
+    supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
+    supabase.from("expenses").select("*").eq("user_id", user.id).order("date", { ascending: true })
+  ])
+
+  const walletBalance = (walletTransactions as any[])
+    ?.filter((t: any) => t.type !== 'savings')
+    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
+
+  const mamaBalance = walletBalance
+
+  const savingsBalance = (walletTransactions as any[])
+    ?.filter((t: any) => t.type === 'savings')
+    ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
+
+  const totalRemaining = mamaBalance + savingsBalance
 
   // Process Category Data
   const categoriesMap: Record<string, number> = {};
@@ -47,11 +63,33 @@ export default async function AnalyticsPage() {
           <p className="text-muted-foreground">Visualize your spending habits.</p>
         </header>
 
-        <AnalyticsCharts
-          categoryData={categoryData}
-          dailyData={dailyData}
-          weeklyData={dailyData}
-        />
+        {/* Primary Stats */}
+        <div className="grid gap-4 md:grid-cols-3">
+          <BalanceCard
+            title="Mama Account"
+            amount={mamaBalance}
+            icon={Home}
+          />
+          <BalanceCard
+            title="Savings Balance"
+            amount={savingsBalance}
+            icon={PiggyBank}
+          />
+          <BalanceCard
+            title="Total Remaining"
+            amount={totalRemaining}
+            icon={CreditCard}
+            className="border-primary/20 bg-primary/10"
+          />
+        </div>
+
+        <div className="pt-4">
+          <AnalyticsCharts
+            categoryData={categoryData}
+            dailyData={dailyData}
+            weeklyData={dailyData}
+          />
+        </div>
       </div>
     </AppLayout>
   )
