@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic"
+
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
@@ -26,13 +28,11 @@ export default async function DashboardPage() {
   const [
     { data: settings },
     { data: walletTransactions },
-    { data: expenses },
-    { data: latestAction }
+    { data: expenses }
   ] = await Promise.all([
     supabase.from("settings").select("*").eq("user_id", user.id).single(),
     supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
-    supabase.from("expenses").select("amount, date").eq("user_id", user.id),
-    supabase.from("action_history").select("created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1)
+    supabase.from("expenses").select("*").eq("user_id", user.id)
   ])
 
   const walletBalance = (walletTransactions as any[])
@@ -68,9 +68,30 @@ export default async function DashboardPage() {
   // Format current day and date
   const currentDayDateStr = format(now, "EEEE, d MMMM yyyy")
 
-  // Last update timestamp calculation
-  const lastActionRow = latestAction && (latestAction as any[]).length > 0 ? latestAction[0] : null
-  const lastUpdatedDate = lastActionRow?.created_at ? new Date(lastActionRow.created_at) : null
+  // Find the absolute latest update timestamp among settings, wallet transactions, and expenses
+  const updateDates: Date[] = []
+  if (settings?.updated_at) {
+    updateDates.push(new Date(settings.updated_at))
+  }
+  if (walletTransactions && (walletTransactions as any[]).length > 0) {
+    (walletTransactions as any[]).forEach((t: any) => {
+      if (t.created_at) {
+        updateDates.push(new Date(t.created_at))
+      }
+    })
+  }
+  if (expenses && (expenses as any[]).length > 0) {
+    (expenses as any[]).forEach((e: any) => {
+      if (e.created_at) {
+        updateDates.push(new Date(e.created_at))
+      }
+    })
+  }
+
+  const lastUpdatedDate = updateDates.length > 0
+    ? new Date(Math.max(...updateDates.map((d) => d.getTime())))
+    : null
+
   const lastUpdatedStr = lastUpdatedDate
     ? format(lastUpdatedDate, "EEEE, d MMMM yyyy, h:mm a")
     : "No updates yet"

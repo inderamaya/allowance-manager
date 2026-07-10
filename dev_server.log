@@ -8,54 +8,41 @@
    - Network:       http://192.168.0.2:3000
 
  ✓ Starting...
- ✓ Ready in 1818ms
+ ✓ Ready in 1816ms
  ○ Compiling /login ...
- GET /login 200 in 5.4s (compile: 4.8s, proxy.ts: 260ms, render: 339ms)
+ GET /login 200 in 5.4s (compile: 4.7s, proxy.ts: 259ms, render: 428ms)
+ GET /login 200 in 108ms (compile: 9ms, proxy.ts: 9ms, render: 90ms)
  ○ Compiling / ...
- ⨯ TypeError: supabase.from(...).select(...).eq(...).order(...).limit is not a function
-    at DashboardPage (src/app/page.tsx:35:123)
-  33 |     supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
-  34 |     supabase.from("expenses").select("amount, date").eq("user_id", user.id),
-> 35 |     supabase.from("action_history").select("created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1)
-     |                                                                                                                           ^
-  36 |   ])
-  37 |
-  38 |   const walletBalance = (walletTransactions as any[]) {
-  digest: '1853014690'
+ ⨯ Error: Route / used "revalidatePath /" during render which is unsupported. To ensure revalidation is performed consistently it must always happen outside of renders and cached functions. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering
+    at triggerMonthlyAllowance (src/app/actions/finance.ts:319:17)
+    at async DashboardPage (src/app/page.tsx:25:3)
+  317 |   }
+  318 |
+> 319 |   revalidatePath('/', 'layout')
+      |                 ^
+  320 | }
+  321 |
+  322 | // Global Undo Function {
+  digest: '850631679'
 }
- GET / 200 in 5.2s (compile: 5.1s, proxy.ts: 8ms, render: 130ms)
- POST /login 303 in 5.3s (compile: 8ms, proxy.ts: 11ms, render: 5.3s)
- GET /login 200 in 105ms (compile: 7ms, proxy.ts: 8ms, render: 89ms)
- ⨯ TypeError: supabase.from(...).select(...).eq(...).order(...).limit is not a function
-    at DashboardPage (src/app/page.tsx:35:123)
-  33 |     supabase.from("wallet_transactions").select("*").eq("user_id", user.id),
-  34 |     supabase.from("expenses").select("amount, date").eq("user_id", user.id),
-> 35 |     supabase.from("action_history").select("created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1)
-     |                                                                                                                           ^
-  36 |   ])
-  37 |
-  38 |   const walletBalance = (walletTransactions as any[]) {
-  digest: '1853014690'
-}
- GET / 200 in 78ms (compile: 8ms, proxy.ts: 7ms, render: 63ms)
- POST /login 303 in 124ms (compile: 7ms, proxy.ts: 16ms, render: 101ms)
- ✓ Compiled in 13ms
- GET /login 200 in 298ms (compile: 138ms, proxy.ts: 9ms, render: 151ms)
- GET / 200 in 590ms (compile: 129ms, proxy.ts: 9ms, render: 452ms)
- POST /login 303 in 672ms (compile: 6ms, proxy.ts: 11ms, render: 656ms)
- GET /settings 200 in 1100ms (compile: 1053ms, proxy.ts: 9ms, render: 38ms)
- POST /settings 200 in 67ms (compile: 4ms, proxy.ts: 6ms, render: 56ms)
- GET /settings 200 in 47ms (compile: 5ms, proxy.ts: 7ms, render: 35ms)
- GET / 200 in 83ms (compile: 5ms, proxy.ts: 6ms, render: 72ms)
+ GET / 200 in 4.6s (compile: 4.4s, proxy.ts: 11ms, render: 246ms)
+ POST /login 303 in 4.7s (compile: 5ms, proxy.ts: 9ms, render: 4.7s)
+ GET /settings 307 in 1389ms (compile: 1144ms, proxy.ts: 18ms, render: 226ms)
+ GET /login 200 in 112ms (compile: 4ms, proxy.ts: 6ms, render: 102ms)
+ GET /login 200 in 100ms (compile: 9ms, proxy.ts: 8ms, render: 84ms)
+ GET / 200 in 352ms (compile: 8ms, proxy.ts: 7ms, render: 337ms)
+ POST /login 303 in 433ms (compile: 5ms, proxy.ts: 9ms, render: 419ms)
+ GET /settings 200 in 237ms (compile: 5ms, proxy.ts: 6ms, render: 226ms)
+ POST /settings 200 in 58ms (compile: 6ms, proxy.ts: 8ms, render: 43ms)
+ GET /settings 200 in 48ms (compile: 4ms, proxy.ts: 6ms, render: 38ms)
+ GET / 200 in 388ms (compile: 5ms, proxy.ts: 5ms, render: 378ms)
  ○ Compiling /analytics ...
- GET /analytics 200 in 4.1s (compile: 4.0s, proxy.ts: 5ms, render: 75ms)
- GET /history 200 in 1611ms (compile: 1553ms, proxy.ts: 9ms, render: 49ms)
- GET /login 200 in 99ms (compile: 4ms, proxy.ts: 6ms, render: 89ms)
- GET / 200 in 109ms (compile: 7ms, proxy.ts: 7ms, render: 96ms)
- POST /login 303 in 178ms (compile: 5ms, proxy.ts: 18ms, render: 156ms)
- GET /settings 200 in 40ms (compile: 7ms, proxy.ts: 5ms, render: 28ms)
- POST /settings 200 in 64ms (compile: 4ms, proxy.ts: 8ms, render: 52ms)
- GET /settings 200 in 61ms (compile: 6ms, proxy.ts: 10ms, render: 45ms)
- GET / 200 in 76ms (compile: 7ms, proxy.ts: 8ms, render: 61ms)
- GET /analytics 200 in 50ms (compile: 4ms, proxy.ts: 5ms, render: 41ms)
- GET /history 200 in 36ms (compile: 4ms, proxy.ts: 6ms, render: 26ms)
+ GET /analytics 200 in 4.8s (compile: 4.2s, proxy.ts: 6ms, render: 591ms)
+ GET /login 200 in 101ms (compile: 5ms, proxy.ts: 6ms, render: 90ms)
+ GET / 200 in 119ms (compile: 5ms, proxy.ts: 6ms, render: 107ms)
+ POST /login 303 in 177ms (compile: 6ms, proxy.ts: 7ms, render: 165ms)
+ GET /settings 200 in 100ms (compile: 4ms, proxy.ts: 5ms, render: 91ms)
+ POST /settings 200 in 49ms (compile: 4ms, proxy.ts: 6ms, render: 40ms)
+ GET /settings 200 in 66ms (compile: 10ms, proxy.ts: 13ms, render: 43ms)
+ GET / 200 in 134ms (compile: 5ms, proxy.ts: 4ms, render: 125ms)
+ GET /analytics 200 in 135ms (compile: 4ms, proxy.ts: 5ms, render: 126ms)

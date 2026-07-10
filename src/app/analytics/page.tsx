@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic"
+
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
