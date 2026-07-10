@@ -12,6 +12,7 @@ class MockQueryBuilder {
   private operation: 'select' | 'insert' | 'update' | 'delete' = 'select'
   private payload: any = null
   private selectedFields: string | null = null
+  private limitCount: number | null = null
 
   constructor(tableName: string) {
     this.tableName = tableName
@@ -53,6 +54,11 @@ class MockQueryBuilder {
     return this
   }
 
+  limit(n: number) {
+    this.limitCount = n
+    return this
+  }
+
   single() {
     this.isSingle = true
     return this
@@ -87,6 +93,10 @@ class MockQueryBuilder {
             if (valA > valB) return ascending ? 1 : -1
             return 0
           })
+        }
+
+        if (this.limitCount !== null) {
+          filtered = filtered.slice(0, this.limitCount)
         }
 
         if (this.isSingle) {
