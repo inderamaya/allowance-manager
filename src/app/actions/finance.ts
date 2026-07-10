@@ -113,6 +113,55 @@ export async function updateSettings(formData: FormData) {
   const savings_allocation = parseFloat(formData.get('savings_allocation') as string)
   const currency = formData.get('currency') as string
 
+  // Fetch current transactions to calculate current balance
+  const { data: walletTransactions, error: transactionsError } = await supabase
+    .from('wallet_transactions')
+    .select('amount, type')
+    .eq('user_id', user.id)
+
+  if (transactionsError) throw transactionsError
+
+  const currentWalletBalance = (walletTransactions as { amount: number; type: string }[] | null)
+    ?.filter((t) => t.type !== 'savings')
+    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+
+  const currentSavingsBalance = (walletTransactions as { amount: number; type: string }[] | null)
+    ?.filter((t) => t.type === 'savings')
+    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+
+  const newWalletBalance = parseFloat(formData.get('current_wallet_balance') as string)
+  const newSavingsBalance = parseFloat(formData.get('current_savings_balance') as string)
+
+  // Calculate differences
+  const walletDiff = newWalletBalance - currentWalletBalance
+  const savingsDiff = newSavingsBalance - currentSavingsBalance
+
+  // Apply wallet balance adjustment if changed
+  if (Math.abs(walletDiff) > 0.001) {
+    const { error: walletError } = await supabase
+      .from('wallet_transactions')
+      .insert({
+        user_id: user.id,
+        amount: walletDiff,
+        type: 'adjustment',
+        description: 'Wallet Balance Adjustment'
+      })
+    if (walletError) throw walletError
+  }
+
+  // Apply savings balance adjustment if changed
+  if (Math.abs(savingsDiff) > 0.001) {
+    const { error: savingsError } = await supabase
+      .from('wallet_transactions')
+      .insert({
+        user_id: user.id,
+        amount: savingsDiff,
+        type: 'savings',
+        description: 'Savings Balance Adjustment'
+      })
+    if (savingsError) throw savingsError
+  }
+
   const { error } = await supabase
     .from('settings')
     .update({
