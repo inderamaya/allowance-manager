@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
@@ -34,6 +36,7 @@ export default async function SettingsPage() {
         </header>
 
         <SettingsForm
+          key={`${walletBalance}-${savingsBalance}`}
           settings={settings}
           currentWalletBalance={walletBalance}
           currentSavingsBalance={savingsBalance}

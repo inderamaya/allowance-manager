@@ -26,7 +26,11 @@ export function MoneyFlowDiagram({ allowance, mama, wallet, savings }: MoneyFlow
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.2 }}
-            className="group relative flex items-center gap-4 rounded-2xl bg-card p-4 shadow-sm transition-all hover:shadow-md w-64 border border-border/50"
+            className={`group relative flex items-center gap-4 rounded-2xl p-4 shadow-sm transition-all hover:shadow-md w-64 border ${
+              step.label === "Savings"
+                ? "bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-500/30 dark:border-emerald-500/20"
+                : "bg-card border-border/50"
+            }`}
           >
             <div className={`rounded-xl ${step.color} p-3 text-white`}>
               <step.icon className="h-6 w-6" />

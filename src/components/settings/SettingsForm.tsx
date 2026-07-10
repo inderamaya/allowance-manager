@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { updateSettings } from "@/app/actions/finance"
 import { Button } from "@/components/ui/button"
@@ -26,6 +26,17 @@ export function SettingsForm({ settings, currentWalletBalance, currentSavingsBal
   const router = useRouter()
   const [pending, setPending] = useState(false)
   const { toast } = useToast()
+
+  const [walletInput, setWalletInput] = useState(currentWalletBalance.toFixed(2))
+  const [savingsInput, setSavingsInput] = useState(currentSavingsBalance.toFixed(2))
+
+  useEffect(() => {
+    setWalletInput(currentWalletBalance.toFixed(2))
+  }, [currentWalletBalance])
+
+  useEffect(() => {
+    setSavingsInput(currentSavingsBalance.toFixed(2))
+  }, [currentSavingsBalance])
 
   async function handleSubmit(formData: FormData) {
     setPending(true)
@@ -73,7 +84,8 @@ export function SettingsForm({ settings, currentWalletBalance, currentSavingsBal
                 name="current_wallet_balance"
                 type="number"
                 step="0.01"
-                defaultValue={currentWalletBalance.toFixed(2)}
+                value={walletInput}
+                onChange={(e) => setWalletInput(e.target.value)}
                 required
                 className="rounded-xl border-border bg-background"
               />
@@ -85,7 +97,8 @@ export function SettingsForm({ settings, currentWalletBalance, currentSavingsBal
                 name="current_savings_balance"
                 type="number"
                 step="0.01"
-                defaultValue={currentSavingsBalance.toFixed(2)}
+                value={savingsInput}
+                onChange={(e) => setSavingsInput(e.target.value)}
                 required
                 className="rounded-xl border-border bg-background"
               />
