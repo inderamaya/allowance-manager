@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { updateSettings } from "@/app/actions/finance"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,6 +23,7 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ settings, currentWalletBalance, currentSavingsBalance }: SettingsFormProps) {
+  const router = useRouter()
   const [pending, setPending] = useState(false)
   const { toast } = useToast()
 
@@ -29,6 +31,7 @@ export function SettingsForm({ settings, currentWalletBalance, currentSavingsBal
     setPending(true)
     try {
       await updateSettings(formData)
+      router.refresh()
       toast({
         title: "Balances updated",
         description: "Your wallet and savings balances have been updated successfully.",

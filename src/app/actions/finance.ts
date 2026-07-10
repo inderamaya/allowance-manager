@@ -73,7 +73,7 @@ export async function addExpense(formData: FormData) {
     wallet_transaction_data: { amount: -amount, type: 'expense', description: `Expense: ${title}`, reference_id: expense.id }
   })
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true }
 }
 
@@ -103,7 +103,7 @@ export async function requestTransfer(formData: FormData) {
     transfer_data: { amount, type: 'request', status: 'pending' }
   })
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true }
 }
 
@@ -146,7 +146,7 @@ export async function receiveTransfer(transferId: string, amount: number) {
     amount
   })
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true }
 }
 
@@ -254,7 +254,7 @@ export async function updateSettings(formData: FormData) {
     new_savings_balance: newSavingsBalance
   })
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true }
 }
 
@@ -316,7 +316,7 @@ export async function triggerMonthlyAllowance() {
     })
   }
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
 }
 
 // Global Undo Function
@@ -387,7 +387,7 @@ export async function undoLastAction() {
   // Mark this action as undone
   await supabase.from('action_history').update({ is_undone: true }).eq('id', lastAction.id)
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true, message: `Undid: ${lastAction.description}` }
 }
 
@@ -485,7 +485,7 @@ export async function redoLastAction() {
   // Mark this action as active again
   await supabase.from('action_history').update({ is_undone: false }).eq('id', lastAction.id)
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true, message: `Redid: ${lastAction.description}` }
 }
 
@@ -656,6 +656,6 @@ export async function redoHistoryAction(actionId: string) {
     })
   }
 
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
   return { success: true, message: `Redid action: ${history.description}` }
 }
