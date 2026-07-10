@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
@@ -6,6 +7,9 @@ export async function createClient() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !key) {
+    const cookieStore = await cookies()
+    const isAdmin = cookieStore.get('admin_session')?.value === 'true'
+
     const queryResult = { data: null, error: null }
     const queryProxy: any = new Proxy({}, {
       get(target, prop) {
@@ -19,10 +23,18 @@ export async function createClient() {
       }
     })
 
+    const mockUser = isAdmin ? {
+      id: '00000000-0000-0000-0000-000000000000',
+      email: 'aeylszh7@allowance-manager.com',
+      user_metadata: {
+        full_name: 'Admin'
+      }
+    } : null
+
     return {
       auth: {
-        getUser: async () => ({ data: { user: null }, error: null }),
-        getSession: async () => ({ data: { session: null }, error: null }),
+        getUser: async () => ({ data: { user: mockUser }, error: null }),
+        getSession: async () => ({ data: { session: isAdmin ? { user: mockUser } : null }, error: null }),
         signInWithPassword: async () => ({ data: {}, error: null }),
         signUp: async () => ({ data: {}, error: null }),
         signInWithOAuth: async () => ({ data: { url: null }, error: null }),

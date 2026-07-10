@@ -1,0 +1,24 @@
+
+> allowance-manager@0.1.0 dev
+> next dev
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.7 (Turbopack)
+   - Local:         http://localhost:3000
+   - Network:       http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ○ Compiling /login ...
+ GET /login 200 in 6.1s (compile: 5.3s, proxy.ts: 400ms, render: 349ms)
+ GET /login?message=Invalid+credentials 200 in 61ms (compile: 5ms, proxy.ts: 7ms, render: 48ms)
+ POST /login 303 in 104ms (compile: 7ms, proxy.ts: 9ms, render: 88ms)
+ POST /login?message=Invalid%20credentials 303 in 2.4s (compile: 6ms, proxy.ts: 7ms, render: 2.4s)
+ ○ Compiling / ...
+ GET / 200 in 6.7s (compile: 6.3s, proxy.ts: 8ms, render: 318ms)
+ GET /login 200 in 101ms (compile: 13ms, proxy.ts: 7ms, render: 81ms)
+ GET /login?message=Invalid+credentials 200 in 60ms (compile: 5ms, proxy.ts: 5ms, render: 50ms)
+ POST /login 303 in 91ms (compile: 4ms, proxy.ts: 8ms, render: 79ms)
+ GET / 200 in 183ms (compile: 30ms, proxy.ts: 12ms, render: 142ms)
+ POST /login?message=Invalid%20credentials 303 in 230ms (compile: 5ms, proxy.ts: 9ms, render: 215ms)
+ ✓ Compiled in 6ms
