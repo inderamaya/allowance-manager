@@ -8,22 +8,30 @@
    - Network:       http://192.168.0.2:3000
 
  ✓ Starting...
- ✓ Ready in 1647ms
+ ✓ Ready in 4.3s
+ ○ Compiling /login ...
+ GET /login 200 in 6.7s (compile: 5.9s, proxy.ts: 441ms, render: 362ms)
  ○ Compiling / ...
- GET / 307 in 7.1s (compile: 6.5s, proxy.ts: 226ms, render: 355ms)
- GET /login 200 in 876ms (compile: 648ms, proxy.ts: 8ms, render: 220ms)
- GET / 200 in 402ms (compile: 6ms, proxy.ts: 9ms, render: 386ms)
- POST /login 303 in 488ms (compile: 5ms, proxy.ts: 13ms, render: 470ms)
- GET /settings 200 in 1079ms (compile: 1003ms, proxy.ts: 6ms, render: 70ms)
- GET / 307 in 139ms (compile: 8ms, proxy.ts: 7ms, render: 124ms)
- GET /login 200 in 75ms (compile: 3ms, proxy.ts: 6ms, render: 66ms)
- GET / 200 in 88ms (compile: 6ms, proxy.ts: 6ms, render: 76ms)
- POST /login 303 in 133ms (compile: 5ms, proxy.ts: 7ms, render: 121ms)
- GET /settings 200 in 36ms (compile: 4ms, proxy.ts: 6ms, render: 26ms)
- GET / 307 in 84ms (compile: 10ms, proxy.ts: 5ms, render: 69ms)
- GET /login 200 in 88ms (compile: 9ms, proxy.ts: 4ms, render: 75ms)
- GET / 200 in 80ms (compile: 5ms, proxy.ts: 5ms, render: 69ms)
- POST /login 303 in 210ms (compile: 3ms, proxy.ts: 7ms, render: 199ms)
- GET /settings 200 in 306ms (compile: 205ms, proxy.ts: 6ms, render: 95ms)
- POST /settings 200 in 60ms (compile: 4ms, proxy.ts: 6ms, render: 50ms)
- GET / 200 in 76ms (compile: 5ms, proxy.ts: 5ms, render: 66ms)
+ ⨯ Error: Route / used "revalidatePath /" during render which is unsupported. To ensure revalidation is performed consistently it must always happen outside of renders and cached functions. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering
+    at triggerMonthlyAllowance (src/app/actions/finance.ts:319:17)
+    at async DashboardPage (src/app/page.tsx:23:3)
+  317 |   }
+  318 |
+> 319 |   revalidatePath('/')
+      |                 ^
+  320 | }
+  321 |
+  322 | // Global Undo Function {
+  digest: '3711999649'
+}
+ GET / 200 in 5.4s (compile: 5.2s, proxy.ts: 11ms, render: 208ms)
+ POST /login 303 in 5.5s (compile: 18ms, proxy.ts: 11ms, render: 5.4s)
+ GET /settings 307 in 2.5s (compile: 2.2s, proxy.ts: 36ms, render: 246ms)
+ GET /login 200 in 97ms (compile: 6ms, proxy.ts: 8ms, render: 83ms)
+ GET /login 200 in 95ms (compile: 7ms, proxy.ts: 7ms, render: 81ms)
+ GET / 200 in 352ms (compile: 8ms, proxy.ts: 6ms, render: 338ms)
+ POST /login 303 in 474ms (compile: 6ms, proxy.ts: 7ms, render: 462ms)
+ GET /settings 200 in 249ms (compile: 5ms, proxy.ts: 7ms, render: 236ms)
+ POST /settings 200 in 59ms (compile: 5ms, proxy.ts: 7ms, render: 47ms)
+ GET / 200 in 307ms (compile: 5ms, proxy.ts: 5ms, render: 297ms)
+ GET /history 200 in 1251ms (compile: 1074ms, proxy.ts: 5ms, render: 171ms)

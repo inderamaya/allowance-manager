@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
 import { BalanceCard } from "@/components/dashboard/BalanceCard"
 import { MoneyFlowDiagram } from "@/components/dashboard/MoneyFlowDiagram"
-import { Wallet, PiggyBank, CreditCard, Home, Calendar, TrendingUp, Info } from "lucide-react"
+import { PiggyBank, CreditCard, Home, Calendar, TrendingUp, Info } from "lucide-react"
 import { triggerMonthlyAllowance } from "@/app/actions/finance"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { differenceInDays, endOfMonth, startOfMonth } from "date-fns"
+import { UndoRedoControls } from "@/components/dashboard/UndoRedoControls"
+import { BankAccountsCard } from "@/components/dashboard/BankAccountsCard"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -50,7 +53,8 @@ export default async function DashboardPage() {
     ?.filter((t: any) => t.type === 'savings')
     ?.reduce((acc: any, t: any) => acc + Number(t.amount), 0) || 0
 
-  const totalRemaining = walletBalance + mamaBalance + savingsBalance
+  // Total Remaining = Mama Account + Savings Balance
+  const totalRemaining = mamaBalance + savingsBalance
 
   // Date calculations
   const now = new Date()
@@ -71,19 +75,16 @@ export default async function DashboardPage() {
   return (
     <AppLayout>
       <div className="space-y-8 animate-in fade-in duration-700">
-        <header className="flex flex-col gap-2">
-          <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
-          <p className="text-muted-foreground">Welcome back. Here&apos;s what&apos;s happening with your allowance.</p>
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="space-y-1">
+            <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
+            <p className="text-muted-foreground">Welcome back. Here&apos;s what&apos;s happening with your allowance.</p>
+          </div>
+          <UndoRedoControls />
         </header>
 
         {/* Primary Stats */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <BalanceCard
-            title="Wallet Balance"
-            amount={walletBalance}
-            icon={Wallet}
-            className="bg-primary/5"
-          />
+        <div className="grid gap-4 md:grid-cols-3">
           <BalanceCard
             title="Mama Account"
             amount={mamaBalance}
@@ -122,6 +123,8 @@ export default async function DashboardPage() {
           </Card>
 
           <div className="space-y-4">
+            <BankAccountsCard />
+
             <Card className="border-none bg-card/50 shadow-none">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
