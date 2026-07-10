@@ -17,7 +17,7 @@
       "savings_allocation": 30,
       "currency": "RM",
       "dark_mode": false,
-      "updated_at": "2026-07-10T11:41:46.503Z"
+      "updated_at": "2026-07-10T12:14:49.129Z"
     }
   ],
   "monthly_allowance": [
@@ -63,6 +63,14 @@
       "amount": 220,
       "type": "savings",
       "description": "Savings Balance Adjustment"
+    },
+    {
+      "id": "870e824b-723c-4456-9b09-57ab51a038a5",
+      "created_at": "2026-07-10T12:14:49.128Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": -170,
+      "type": "savings",
+      "description": "Savings Balance Adjustment"
     }
   ],
   "action_history": [
@@ -99,6 +107,42 @@
         "original_savings_balance": 30,
         "new_wallet_balance": 150,
         "new_savings_balance": 250
+      },
+      "is_undone": false
+    },
+    {
+      "id": "d85fa288-95b1-48a2-8055-6f820ea69d31",
+      "created_at": "2026-07-10T12:14:49.130Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "action_type": "UPDATE_BALANCES",
+      "description": "Updated balances: Wallet to RM 150.00, Savings to RM 80.00",
+      "payload": {
+        "original_settings": {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "user_id": "00000000-0000-0000-0000-000000000000",
+          "monthly_allowance": 430,
+          "mama_allocation": 300,
+          "wallet_allocation": 100,
+          "savings_allocation": 30,
+          "currency": "RM",
+          "dark_mode": false,
+          "updated_at": "2026-07-10T11:41:46.503Z"
+        },
+        "new_settings": {
+          "monthly_allowance": 430,
+          "mama_allocation": 300,
+          "wallet_allocation": 100,
+          "savings_allocation": 30,
+          "currency": "RM"
+        },
+        "wallet_transaction_id": null,
+        "savings_transaction_id": "870e824b-723c-4456-9b09-57ab51a038a5",
+        "wallet_diff": 0,
+        "savings_diff": -170,
+        "original_wallet_balance": 150,
+        "original_savings_balance": 250,
+        "new_wallet_balance": 150,
+        "new_savings_balance": 80
       },
       "is_undone": false
     }
