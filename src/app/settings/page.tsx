@@ -9,11 +9,21 @@ export default async function SettingsPage() {
 
   if (!user) redirect("/login")
 
-  const { data: settings } = await supabase
-    .from("settings")
-    .select("*")
-    .eq("user_id", user.id)
-    .single()
+  const [
+    { data: settings },
+    { data: walletTransactions }
+  ] = await Promise.all([
+    supabase.from("settings").select("*").eq("user_id", user.id).single(),
+    supabase.from("wallet_transactions").select("amount, type").eq("user_id", user.id)
+  ])
+
+  const walletBalance = (walletTransactions as { amount: number; type: string }[] | null)
+    ?.filter((t) => t.type !== 'savings')
+    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+
+  const savingsBalance = (walletTransactions as { amount: number; type: string }[] | null)
+    ?.filter((t) => t.type === 'savings')
+    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
 
   return (
     <AppLayout>
@@ -23,7 +33,11 @@ export default async function SettingsPage() {
           <p className="text-muted-foreground">Manage your account and allowance settings.</p>
         </header>
 
-        <SettingsForm settings={settings} />
+        <SettingsForm
+          settings={settings}
+          currentWalletBalance={walletBalance}
+          currentSavingsBalance={savingsBalance}
+        />
       </div>
     </AppLayout>
   )
