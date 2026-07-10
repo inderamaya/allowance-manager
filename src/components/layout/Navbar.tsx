@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, ReceiptText, PieChart, Settings, LogOut, ArrowLeftRight } from "lucide-react"
+import { Home, ReceiptText, PieChart, Settings, LogOut, ArrowLeftRight, History } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { signOut } from "@/app/login/actions"
@@ -13,6 +13,7 @@ const navigation = [
   { name: "Transactions", href: "/transactions", icon: ReceiptText },
   { name: "Transfers", href: "/transfers", icon: ArrowLeftRight },
   { name: "Analytics", href: "/analytics", icon: PieChart },
+  { name: "History", href: "/history", icon: History },
   { name: "Settings", href: "/settings", icon: Settings },
 ]
 
@@ -22,7 +23,7 @@ export function Sidebar() {
   return (
     <div className="flex h-full flex-col border-r bg-card/30 backdrop-blur-md">
       <div className="flex h-16 items-center px-6">
-        <h1 className="text-xl font-bold tracking-tight text-primary">Allowance</h1>
+        <h1 className="text-xl font-bold tracking-tight text-primary">Allowance Manager</h1>
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {

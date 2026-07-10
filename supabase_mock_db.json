@@ -1,0 +1,106 @@
+{
+  "profiles": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "full_name": "Admin",
+      "avatar_url": null,
+      "updated_at": "2026-07-10T11:40:05.662Z"
+    }
+  ],
+  "settings": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "monthly_allowance": 430,
+      "mama_allocation": 300,
+      "wallet_allocation": 100,
+      "savings_allocation": 30,
+      "currency": "RM",
+      "dark_mode": false,
+      "updated_at": "2026-07-10T11:41:46.503Z"
+    }
+  ],
+  "monthly_allowance": [
+    {
+      "id": "d54bad07-802a-4810-8f10-f04f2a2bea04",
+      "created_at": "2026-07-10T11:40:14.463Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": 430,
+      "month_year": "2026-07-01"
+    }
+  ],
+  "expenses": [],
+  "transfers": [],
+  "wallet_transactions": [
+    {
+      "id": "6c717470-518e-4880-962e-63971678bf74",
+      "created_at": "2026-07-10T11:40:14.463Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": 100,
+      "type": "allowance",
+      "description": "Monthly Wallet Allocation"
+    },
+    {
+      "id": "387960e7-e864-4b1f-8112-e43d1d4fab7c",
+      "created_at": "2026-07-10T11:40:14.464Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": 30,
+      "type": "savings",
+      "description": "Monthly Savings Allocation"
+    },
+    {
+      "id": "fea1bb37-4204-42e3-90c1-e013c7d5df7e",
+      "created_at": "2026-07-10T11:41:46.502Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": 50,
+      "type": "adjustment",
+      "description": "Wallet Balance Adjustment"
+    },
+    {
+      "id": "4bc33fba-c19c-499b-be35-941221e80c30",
+      "created_at": "2026-07-10T11:41:46.502Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "amount": 220,
+      "type": "savings",
+      "description": "Savings Balance Adjustment"
+    }
+  ],
+  "action_history": [
+    {
+      "id": "9bbd029c-fcdd-4731-bd5d-3cb19fc0a104",
+      "created_at": "2026-07-10T11:41:46.503Z",
+      "user_id": "00000000-0000-0000-0000-000000000000",
+      "action_type": "UPDATE_BALANCES",
+      "description": "Updated balances: Wallet to RM 150.00, Savings to RM 250.00",
+      "payload": {
+        "original_settings": {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "user_id": "00000000-0000-0000-0000-000000000000",
+          "monthly_allowance": 430,
+          "mama_allocation": 300,
+          "wallet_allocation": 100,
+          "savings_allocation": 30,
+          "currency": "RM",
+          "dark_mode": false,
+          "updated_at": "2026-07-10T11:40:05.663Z"
+        },
+        "new_settings": {
+          "monthly_allowance": 430,
+          "mama_allocation": 300,
+          "wallet_allocation": 100,
+          "savings_allocation": 30,
+          "currency": "RM"
+        },
+        "wallet_transaction_id": "fea1bb37-4204-42e3-90c1-e013c7d5df7e",
+        "savings_transaction_id": "4bc33fba-c19c-499b-be35-941221e80c30",
+        "wallet_diff": 50,
+        "savings_diff": 220,
+        "original_wallet_balance": 100,
+        "original_savings_balance": 30,
+        "new_wallet_balance": 150,
+        "new_savings_balance": 250
+      },
+      "is_undone": false
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import AppLayout from "@/components/layout/AppLayout"
 import { RequestTransferDialog } from "@/components/transfers/RequestTransferDialog"
 import { TransferList } from "@/components/transfers/TransferList"
 import { ArrowLeftRight } from "lucide-react"
+import { BankAccountsCard } from "@/components/dashboard/BankAccountsCard"
 
 export default async function TransfersPage() {
   const supabase = await createClient()
@@ -31,9 +32,14 @@ export default async function TransfersPage() {
           <RequestTransferDialog />
         </div>
 
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">History</h3>
-          <TransferList transfers={transfers || []} />
+        <div className="grid gap-6 lg:grid-cols-3 pt-4">
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="text-lg font-semibold">History</h3>
+            <TransferList transfers={transfers || []} />
+          </div>
+          <div className="space-y-4">
+            <BankAccountsCard />
+          </div>
         </div>
       </div>
     </AppLayout>
