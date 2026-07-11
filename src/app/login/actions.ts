@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
+import { auth, signInWithEmailAndPassword } from '@/lib/firebase'
 
 export async function login(formData: FormData) {
   const username = formData.get('username') as string
@@ -23,42 +24,16 @@ export async function login(formData: FormData) {
     secure: process.env.NODE_ENV === 'production',
   })
 
-  // If real Supabase is configured
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    const supabase = await createClient()
+  // Authenticate with Firebase Authentication
+  try {
     const email = 'aeylszh7@allowance-manager.com'
-    const dbPassword = 'aeylSzh@7'
-
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password: dbPassword,
-    })
-
-    if (signInError) {
-      // Attempt sign up if sign in fails (likely because user doesn't exist yet)
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password: dbPassword,
-        options: {
-          data: {
-            full_name: 'Admin',
-          }
-        }
-      })
-
-      if (signUpError) {
-        redirect(`/login?message=${encodeURIComponent(signUpError.message)}`)
-      }
-
-      // Try signing in again if signUp is successful but didn't auto-login
-      const { error: secondSignInError } = await supabase.auth.signInWithPassword({
-        email,
-        password: dbPassword,
-      })
-
-      if (secondSignInError) {
-        redirect(`/login?message=${encodeURIComponent(secondSignInError.message)}`)
-      }
+    await signInWithEmailAndPassword(auth, email, password)
+  } catch (error: any) {
+    console.error('Firebase Auth Error:', error)
+    // If real Firebase Auth is configured and failed, redirect with the message
+    // If it's a real Firebase error, we can display it. Otherwise we proceed if mock is active.
+    if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+      redirect(`/login?message=${encodeURIComponent(error.message || 'Firebase Authentication failed')}`)
     }
   }
 
@@ -70,9 +45,11 @@ export async function signOut() {
   const cookieStore = await cookies()
   cookieStore.set('admin_session', '', { maxAge: 0, path: '/' })
 
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    const supabase = await createClient()
-    await supabase.auth.signOut()
+  try {
+    const { signOut: firebaseSignOut, auth: firebaseAuth } = await import('@/lib/firebase')
+    await firebaseSignOut(firebaseAuth)
+  } catch (err) {
+    console.error('Error signing out from Firebase:', err)
   }
 
   redirect('/login')

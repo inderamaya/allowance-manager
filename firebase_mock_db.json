@@ -1,0 +1,79 @@
+{
+  "admin": {
+    "credentials": {
+      "username": "aeylszh7",
+      "password": "aeylSzh@7"
+    }
+  },
+  "settings": {
+    "default": {
+      "monthlyAllowance": 430,
+      "monthlySavings": 30,
+      "maybankAllocation": 300,
+      "alertEmail": "admin@example.com"
+    }
+  },
+  "manual_offsets": {
+    "offsets": {
+      "wallet_offset": 0,
+      "savings_offset": 0
+    }
+  },
+  "transactions": {
+    "v6j220uuwvx8e72i18we": {
+      "id": "v6j220uuwvx8e72i18we",
+      "date": "2026-07-11",
+      "type": "allowance",
+      "amount": 100,
+      "note": "Monthly Wallet Allocation",
+      "timestamp": "2026-07-11T02:44:42.299Z"
+    },
+    "1qxp8rq55xigehg1lb0rb8": {
+      "id": "1qxp8rq55xigehg1lb0rb8",
+      "date": "2026-07-11",
+      "type": "savings",
+      "amount": 30,
+      "note": "Monthly Savings Allocation",
+      "timestamp": "2026-07-11T02:44:42.300Z"
+    }
+  },
+  "allowance_stats": {
+    "6qf8faq48kxp1k07mlnok": {
+      "id": "6qf8faq48kxp1k07mlnok",
+      "month": "2026-07",
+      "dateReceived": "2026-07-11",
+      "allowanceAmount": 430,
+      "usage": 0,
+      "savings": 30,
+      "balance": 100
+    }
+  },
+  "savings_stats": {
+    "g29o9bv4l37o20g5psmc8q": {
+      "id": "g29o9bv4l37o20g5psmc8q",
+      "month": "2026-07",
+      "savings": 30,
+      "usage": 0,
+      "balance": 30
+    }
+  },
+  "history": {
+    "9l42dtqur5duc1baz7jpnr": {
+      "id": "9l42dtqur5duc1baz7jpnr",
+      "actionType": "PROCESS_NEW_MONTH",
+      "details": "Processed new month: 2026-07 with RM 430.00 allowance",
+      "undoId": "2026-07",
+      "timestamp": "2026-07-11T02:44:42.302Z",
+      "isUndone": false,
+      "payload": {
+        "month": "2026-07",
+        "allowanceAmount": 430
+      }
+    }
+  },
+  "activity": {
+    "last": {
+      "timestamp": "2026-07-11T02:44:42.302Z"
+    }
+  }
+}

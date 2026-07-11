@@ -8,41 +8,123 @@
    - Network:       http://192.168.0.2:3000
 
  ✓ Starting...
- ✓ Ready in 1816ms
+ ✓ Ready in 1880ms
  ○ Compiling /login ...
- GET /login 200 in 5.4s (compile: 4.7s, proxy.ts: 259ms, render: 428ms)
- GET /login 200 in 108ms (compile: 9ms, proxy.ts: 9ms, render: 90ms)
+ GET /login 200 in 6.1s (compile: 5.3s, proxy.ts: 318ms, render: 450ms)
  ○ Compiling / ...
- ⨯ Error: Route / used "revalidatePath /" during render which is unsupported. To ensure revalidation is performed consistently it must always happen outside of renders and cached functions. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering
-    at triggerMonthlyAllowance (src/app/actions/finance.ts:319:17)
-    at async DashboardPage (src/app/page.tsx:25:3)
-  317 |   }
-  318 |
-> 319 |   revalidatePath('/', 'layout')
-      |                 ^
-  320 | }
-  321 |
-  322 | // Global Undo Function {
-  digest: '850631679'
-}
- GET / 200 in 4.6s (compile: 4.4s, proxy.ts: 11ms, render: 246ms)
- POST /login 303 in 4.7s (compile: 5ms, proxy.ts: 9ms, render: 4.7s)
- GET /settings 307 in 1389ms (compile: 1144ms, proxy.ts: 18ms, render: 226ms)
- GET /login 200 in 112ms (compile: 4ms, proxy.ts: 6ms, render: 102ms)
- GET /login 200 in 100ms (compile: 9ms, proxy.ts: 8ms, render: 84ms)
- GET / 200 in 352ms (compile: 8ms, proxy.ts: 7ms, render: 337ms)
- POST /login 303 in 433ms (compile: 5ms, proxy.ts: 9ms, render: 419ms)
- GET /settings 200 in 237ms (compile: 5ms, proxy.ts: 6ms, render: 226ms)
- POST /settings 200 in 58ms (compile: 6ms, proxy.ts: 8ms, render: 43ms)
- GET /settings 200 in 48ms (compile: 4ms, proxy.ts: 6ms, render: 38ms)
- GET / 200 in 388ms (compile: 5ms, proxy.ts: 5ms, render: 378ms)
- ○ Compiling /analytics ...
- GET /analytics 200 in 4.8s (compile: 4.2s, proxy.ts: 6ms, render: 591ms)
- GET /login 200 in 101ms (compile: 5ms, proxy.ts: 6ms, render: 90ms)
- GET / 200 in 119ms (compile: 5ms, proxy.ts: 6ms, render: 107ms)
- POST /login 303 in 177ms (compile: 6ms, proxy.ts: 7ms, render: 165ms)
- GET /settings 200 in 100ms (compile: 4ms, proxy.ts: 5ms, render: 91ms)
- POST /settings 200 in 49ms (compile: 4ms, proxy.ts: 6ms, render: 40ms)
- GET /settings 200 in 66ms (compile: 10ms, proxy.ts: 13ms, render: 43ms)
- GET / 200 in 134ms (compile: 5ms, proxy.ts: 4ms, render: 125ms)
- GET /analytics 200 in 135ms (compile: 4ms, proxy.ts: 5ms, render: 126ms)
+ POST /login 303 in 3.4s (compile: 7ms, proxy.ts: 10ms, render: 3.4s)
+ ⚠ ./src/lib/firebase.ts:139:20
+Module not found: Can't resolve 'fs'
+[0m [90m 137 |[39m       [36mtry[39m {
+ [90m 138 |[39m         [36mconst[39m fsModule [33m=[39m [32m'fs'[39m
+[31m[1m>[22m[39m[90m 139 |[39m         [36mconst[39m fs [33m=[39m require(fsModule)
+ [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 140 |[39m         fs[33m.[39mwriteFileSync(filePath[33m,[39m [33mJSON[39m[33m.[39mstringify([36mthis[39m[33m.[39mstate[33m,[39m [36mnull[39m[33m,[39m [35m2[39m)[33m,[39m [32m'utf-8'[39m)
+ [90m 141 |[39m       } [36mcatch[39m {
+ [90m 142 |[39m         [90m// Safe catch[39m[0m
+
+
+
+Import traces:
+  #1 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/login/actions.ts
+
+  #2 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/actions/finance.ts
+    ./src/app/page.tsx
+
+  #3 [Client Component Browser]:
+    ./src/lib/firebase.ts [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+  #4 [Client Component SSR]:
+    ./src/lib/firebase.ts [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ GET / 200 in 6.4s (compile: 6.3s, proxy.ts: 15ms, render: 59ms)
+ GET /login 200 in 126ms (compile: 8ms, proxy.ts: 10ms, render: 108ms)
+ ⚠ ./src/lib/firebase.ts:139:20
+Module not found: Can't resolve 'fs'
+[0m [90m 137 |[39m       [36mtry[39m {
+ [90m 138 |[39m         [36mconst[39m fsModule [33m=[39m [32m'fs'[39m
+[31m[1m>[22m[39m[90m 139 |[39m         [36mconst[39m fs [33m=[39m require(fsModule)
+ [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 140 |[39m         fs[33m.[39mwriteFileSync(filePath[33m,[39m [33mJSON[39m[33m.[39mstringify([36mthis[39m[33m.[39mstate[33m,[39m [36mnull[39m[33m,[39m [35m2[39m)[33m,[39m [32m'utf-8'[39m)
+ [90m 141 |[39m       } [36mcatch[39m {
+ [90m 142 |[39m         [90m// Safe catch[39m[0m
+
+
+
+Import traces:
+  #1 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/login/actions.ts
+
+  #2 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/actions/finance.ts
+    ./src/app/page.tsx
+
+  #3 [Client Component Browser]:
+    ./src/lib/firebase.ts [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+  #4 [Client Component SSR]:
+    ./src/lib/firebase.ts [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ ⚠ ./src/lib/firebase.ts:139:20
+Module not found: Can't resolve 'fs'
+[0m [90m 137 |[39m       [36mtry[39m {
+ [90m 138 |[39m         [36mconst[39m fsModule [33m=[39m [32m'fs'[39m
+[31m[1m>[22m[39m[90m 139 |[39m         [36mconst[39m fs [33m=[39m require(fsModule)
+ [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 140 |[39m         fs[33m.[39mwriteFileSync(filePath[33m,[39m [33mJSON[39m[33m.[39mstringify([36mthis[39m[33m.[39mstate[33m,[39m [36mnull[39m[33m,[39m [35m2[39m)[33m,[39m [32m'utf-8'[39m)
+ [90m 141 |[39m       } [36mcatch[39m {
+ [90m 142 |[39m         [90m// Safe catch[39m[0m
+
+
+
+Import traces:
+  #1 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/login/actions.ts
+
+  #2 [Server Component]:
+    ./src/lib/firebase.ts
+    ./src/app/actions/finance.ts
+    ./src/app/page.tsx
+
+  #3 [Client Component Browser]:
+    ./src/lib/firebase.ts [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component Browser]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+  #4 [Client Component SSR]:
+    ./src/lib/firebase.ts [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Client Component SSR]
+    ./src/components/dashboard/DashboardClient.tsx [Server Component]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ GET / 200 in 80ms (compile: 22ms, proxy.ts: 12ms, render: 46ms)
+ POST /login 303 in 134ms (compile: 4ms, proxy.ts: 13ms, render: 117ms)
