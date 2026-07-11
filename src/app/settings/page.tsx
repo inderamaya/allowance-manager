@@ -1,31 +1,17 @@
 export const dynamic = "force-dynamic"
 
-import { createClient } from "@/lib/supabase/server"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
-import { SettingsForm } from "@/components/settings/SettingsForm"
+import { SettingsClient } from "@/components/settings/SettingsClient"
 
 export default async function SettingsPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const cookieStore = await cookies()
+  const session = cookieStore.get('admin_session')
 
-  if (!user) redirect("/login")
-
-  const [
-    { data: settings },
-    { data: walletTransactions }
-  ] = await Promise.all([
-    supabase.from("settings").select("*").eq("user_id", user.id).single(),
-    supabase.from("wallet_transactions").select("amount, type").eq("user_id", user.id)
-  ])
-
-  const walletBalance = (walletTransactions as { amount: number; type: string }[] | null)
-    ?.filter((t) => t.type !== 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
-
-  const savingsBalance = (walletTransactions as { amount: number; type: string }[] | null)
-    ?.filter((t) => t.type === 'savings')
-    ?.reduce((acc, t) => acc + Number(t.amount), 0) || 0
+  if (!session || session.value !== 'true') {
+    redirect("/login")
+  }
 
   return (
     <AppLayout>
@@ -35,12 +21,7 @@ export default async function SettingsPage() {
           <p className="text-muted-foreground">Manage your account and allowance settings.</p>
         </header>
 
-        <SettingsForm
-          key={`${walletBalance}-${savingsBalance}`}
-          settings={settings}
-          currentWalletBalance={walletBalance}
-          currentSavingsBalance={savingsBalance}
-        />
+        <SettingsClient />
       </div>
     </AppLayout>
   )

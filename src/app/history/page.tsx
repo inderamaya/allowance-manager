@@ -1,20 +1,18 @@
-import { createClient } from "@/lib/supabase/server"
+export const dynamic = "force-dynamic"
+
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import AppLayout from "@/components/layout/AppLayout"
-import { HistoryList } from "@/components/history/HistoryList"
+import { HistoryClient } from "@/components/history/HistoryClient"
 import { History } from "lucide-react"
 
 export default async function HistoryPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const cookieStore = await cookies()
+  const session = cookieStore.get('admin_session')
 
-  if (!user) redirect("/login")
-
-  const { data: actionHistory } = await supabase
-    .from("action_history")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
+  if (!session || session.value !== 'true') {
+    redirect("/login")
+  }
 
   return (
     <AppLayout>
@@ -24,12 +22,10 @@ export default async function HistoryPage() {
             <History className="h-8 w-8 text-primary" />
             Action Log
           </h2>
-          <p className="text-muted-foreground">Permanent ledger of all settings updates, transfers, and transactions.</p>
+          <p className="text-muted-foreground">Permanent ledger of all settings updates, transfers, and transactions in real-time.</p>
         </header>
 
-        <div className="pt-4">
-          <HistoryList history={actionHistory || []} />
-        </div>
+        <HistoryClient />
       </div>
     </AppLayout>
   )
